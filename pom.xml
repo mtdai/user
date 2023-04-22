@@ -119,10 +119,10 @@
 <!--        <resources>-->
 <!--            <resource>-->
 <!--                <directory>src/main/java</directory>-->
-<!--                <includes>-->
-<!--                    <include>**/*.properties</include>-->
-<!--                    <include>**/*.yml</include>-->
-<!--                </includes>-->
+<!--                <excludes>-->
+<!--                    <exclude>**/Vo.java</exclude>-->
+<!--                    <exclude>**/s.properties</exclude>-->
+<!--                </excludes>-->
 <!--            </resource>-->
 <!--        </resources>-->
     </build>

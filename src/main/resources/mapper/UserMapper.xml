@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!--namespace=绑定一个对应的Dao/Mapper接口-->
+<mapper namespace="org.daimt.home.study.batis.dao.UserDao">
+    <resultMap id="User" type="org.daimt.home.study.batis.entity.User">
+        <id property="id" column="id" />
+        <result property="name" column="name" />
+        <result property="pwd" column="pwd" />
+    </resultMap>
+    <resultMap id="User2" type="org.daimt.home.study.batis.entity.User2">
+        <id property="id" column="id" />
+        <result property="username" column="name" />
+        <result property="password" column="pwd" />
+    </resultMap>
+
+
+    <!--select查询语句-->
+    <select id="getUserList" resultType="User">
+        select * from user
+    </select>
+
+    <!--resultType="com.daimalu.pojo.User2" 可以去掉-->
+    <select id="getUserList2"  resultMap="User2">
+        select * from user
+    </select>
+
+    <sql id="allColumns">
+        select * from user
+    </sql>
+
+    <select id="findUsers" parameterType="map" resultType="User">
+        <include refid="allColumns" />
+        <where>
+            <choose>
+                <when test="name != null">
+                    name = #{name}
+                </when>
+                <when test="pwd != null">
+                    and pwd = #{pwd}
+                </when>
+                <otherwise>
+                    id = 3
+                </otherwise>
+            </choose>
+        </where>
+    </select>
+    
+    <update id="updateUser" parameterType="map">
+        update user
+        <set>
+            <if test="name != null">
+                name = #{name},
+            </if>
+            <if test="pwd != null">
+                pwd = #{pwd},
+            </if>
+        </set>
+        where id = #{id}
+    </update>
+
+    <insert id="addUser" parameterType="User">
+        insert into user (name,pwd) values (#{name},#{pwd})
+        <selectKey keyProperty="id" order="AFTER" resultType="int">
+            SELECT LAST_INSERT_ID()
+        </selectKey>
+    </insert>
+
+<!--  获取插入数据的主键  https://baijiahao.baidu.com/s?id=1761587851052330303&wfr=spider&for=pc-->
+    <insert id="addUser2" parameterType="org.daimt.home.study.batis.entity.User" useGeneratedKeys="true" keyProperty="id">
+        insert into user (name,pwd) values (#{name},#{pwd})
+    </insert>
+
+    <select id="findUserByIds" parameterType="java.util.List" resultType="User">
+        select * from user
+        <where>
+            <foreach collection="list" item="id" open="id in (" close=")" separator=",">
+                #{id}
+            </foreach>
+        </where>
+    </select>
+
+    <insert id="addUsers" parameterType="java.util.List" useGeneratedKeys="true" keyProperty="id">
+        insert into user (name,pwd)
+        <foreach collection="list" item="user" open="values" close="" separator=",">
+            (#{user.name},#{user.pwd})
+        </foreach>
+    </insert>
+
+
+</mapper>

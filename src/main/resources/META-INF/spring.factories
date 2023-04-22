@@ -1,0 +1,3 @@
+org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
+org.daimt.home.starter.SmsAutoConfiguration,\
+org.daimt.home.starter.PageInterceptorAutoConfiguration
